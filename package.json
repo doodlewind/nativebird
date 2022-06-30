@@ -1,8 +1,10 @@
 {
   "name": "nativebird",
+  "description": "Ultralight promise extension compatible with Bluebird",
   "type": "module",
   "version": "1.1.0",
   "author": "Yifeng Wang",
+  "repository": "https://github.com/doodlewind/nativebird.git",
   "main": "promise.mjs",
   "types": "./index.d.ts",
   "scripts": {
@@ -11,5 +13,14 @@
   "devDependencies": {
     "mocha": "^10.0.0"
   },
+  "keywords": [
+    "promise",
+    "bluebird",
+    "async",
+    "async library",
+    "promise library",
+    "promise extension",
+    "observable"
+  ],
   "license": "MIT"
 }
