@@ -1,6 +1,6 @@
 # NativeBird
 
-Ultralight promise extension compatible with BlueBird
+Ultralight promise extension compatible with Bluebird
 
 <a href="./package.json">
   <img src="https://img.shields.io/npm/v/nativebird.svg?maxAge=300&color=f4e335"/>
@@ -15,14 +15,14 @@ Ultralight promise extension compatible with BlueBird
 
 <!-- TODO 中文介绍 -->
 
-As a pioneer in JavaScript async ecosystem, [BlueBird](http://bluebirdjs.com/) is a great userland promise library with handy utility methods included. However the way it works leads to larger bundle size and more verbose stack trace.
+As a pioneer in JavaScript async ecosystem, [Bluebird](http://bluebirdjs.com/) is a great userland promise library with handy utility methods included. However the way it works leads to larger bundle size and more verbose stack trace.
 
-NativeBird is compatible with a core BlueBird subset through using native promise, and all of its extended APIs (implemented within ~200 lines) are fully tested with the corresponding test cases in BlueBird.
+NativeBird is compatible with a core Bluebird subset through using native promise, and all of its extended APIs (implemented within ~200 lines) are fully tested with the corresponding test cases in Bluebird.
 
 NativeBird can be used in several scenarios:
 
 - To reuse promise utility methods like `Promise.map` and `Promise.each` without copying snippets from a gist.
-- To perform migration in existing BlueBird projects.
+- To perform migration in existing Bluebird projects.
 - To simply learn JavaScript async operation skills 🐶.
 
 ## Installation
@@ -65,7 +65,7 @@ Since NativeBird is inherited from native promise, all promise APIs defined in E
 
 ## Contribution
 
-To implement a new API in BlueBird, please also port the corresponding test cases under `test/mocha` in BlueBird repo and test it with `npm test`.
+To implement a new API in Bluebird, please also port the corresponding test cases under `test/mocha` in Bluebird repo and test it with `npm test`.
 
 ## License
 
