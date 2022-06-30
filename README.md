@@ -56,7 +56,7 @@ It's also fine to copy `promise.mjs` and its type definitions directly into your
   - [`promise.all`](http://bluebirdjs.com/docs/api/all.html)
   - [`promise.spread`](http://bluebirdjs.com/docs/api/spread.html)
 
-Since NativeBird is inherited from native promise, all promise APIs defined in ECMAScript standard (say [`Promise.allSettled`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled) and [`Promise.any`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any)) are naturally supported.
+Since NativeBird inherits from native promise, all promise APIs defined in ECMAScript standard (say [`Promise.allSettled`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled) and [`Promise.any`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any)) are naturally supported.
 
 ## Caveats
 
