@@ -2,7 +2,12 @@
 
 Ultralight promise extension compatible with BlueBird
 
-<!-- TODO version and size badge -->
+<a href="./package.json">
+  <img src="https://img.shields.io/npm/v/nativebird.svg?maxAge=300&color=f4e335"/>
+</a>
+<a href="./package.json">
+  <img src="https://img.shields.io/bundlephobia/min/nativebird"/>
+</a>
 
 ![logo](./logo.png)
 
