@@ -13,11 +13,11 @@ Ultralight promise extension compatible with Bluebird
 
 ## Introduction
 
-<!-- TODO 中文介绍 -->
+[中文介绍](https://zhuanlan.zhihu.com/p/536154525)
 
 As a pioneer in JavaScript async ecosystem, [Bluebird](http://bluebirdjs.com/) is a great userland promise library with handy utility methods included. However the way it works leads to larger bundle size and more verbose stack trace.
 
-NativeBird is compatible with a core Bluebird subset through using native promise, and all of its extended APIs (implemented within ~200 lines) are fully tested with the corresponding test cases in Bluebird.
+NativeBird is compatible with a core Bluebird subset by extending native promise, and all of its extended APIs (implemented within ~200 lines) are fully tested with the corresponding test cases in Bluebird.
 
 NativeBird can be used in several scenarios:
 
@@ -35,7 +35,7 @@ npm install nativebird
 import Promise from "nativebird";
 ```
 
-It's also fine to copy `promise.mjs` and its type definitions directly into your project directory.
+It's also fine to copy `promise.mjs` and its type definition directly into your project directory.
 
 ## API
 
