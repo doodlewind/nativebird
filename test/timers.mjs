@@ -42,15 +42,18 @@ describe("timeout", function () {
     });
 
     it("should reject with a timeout error if the promise is too slow", function() {
-        return Promise.delay(1)
+        return Promise.delay(30)
         .timeout(10)
-        .catch(function(){
+        .then(assert.fail)
+        .catch(function(e){
+            assert(e instanceof Error);
         })
     });
 
     it("should reject with a custom timeout error if the promise is too slow and msg was provided", function() {
-        return Promise.delay(1)
+        return Promise.delay(30)
         .timeout(10, "custom")
+        .then(assert.fail)
         .catch(function(e){
             assert(/custom/i.test(e.message));
         });
