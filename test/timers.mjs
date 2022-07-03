@@ -60,19 +60,14 @@ describe("timeout", function () {
     });
 
     it("should cancel the parent promise once the timeout expires", function() {
-        var didNotExecute = true;
         var wasRejectedWithTimeout = false;
-        var p = Promise.delay(22).then(function() {
-            didNotExecute = false;
-        })
+        var p = Promise.delay(22).then(function() {})
         p.timeout(11).then(function() {
             return 10;
         }).catch(function(e) {
             wasRejectedWithTimeout = true;
         })
         return Promise.delay(33).then(function() {
-            // only available with cancellation enabled, ignored
-            // assert(didNotExecute, "parent promise was not cancelled");
             assert(wasRejectedWithTimeout, "promise was not rejected with timeout");
         })
     });
