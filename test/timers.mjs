@@ -188,7 +188,7 @@ describe("delay", function () {
 
     it("should reject with a custom error if an error was provided as a parameter", function() {
         var err = Error("Testing Errors")
-        return Promise.delay(1)
+        return Promise.delay(11)
             .timeout(10, err)
             .catch(function(e){
                 assert(e === err);
