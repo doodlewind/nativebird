@@ -1,3 +1,4 @@
+
 class NPromise extends Promise {
   delay(ms = 0) {
     return this.then((value) => NPromise.delay(ms, value));
@@ -46,6 +47,10 @@ class NPromise extends Promise {
       }
       return fn.apply(null, arguments[0]);
     });
+  }
+
+  reduce(fn, initialValue) {
+    return NPromise.reduce(this, fn, initialValue);
   }
 }
 
@@ -138,5 +143,35 @@ NPromise.defer = function defer() {
     promise,
   };
 };
+
+NPromise.reduce = async function reduce(promises, fn, initialValue) {
+  const hasInitialValue = initialValue !== undefined;
+  promises = await promises;
+  if (!Array.isArray(promises)) {
+    throw new TypeError("Promise.reduce requires array");
+  }
+
+  if (typeof fn !== 'function') {
+    throw new TypeError(typeof fn + " is not a function");
+  }
+
+  if (!promises.length) {
+    return await initialValue;
+  }
+
+  const startIndex = hasInitialValue ? 0 : 1;
+  return NPromise.all(promises).then(async (list) => {
+    if (hasInitialValue) {
+      initialValue = await initialValue;
+    } else {
+      initialValue = await promises[0];
+    }
+    let ret = initialValue;
+    for (let i = startIndex, l = list.length; i < l; i++) {
+      ret = await fn(ret, list[i], i, list);
+    }
+    return ret;
+  });
+}
 
 export default NPromise;
