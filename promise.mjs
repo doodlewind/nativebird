@@ -18,7 +18,11 @@ class NPromise extends Promise {
 
   timeout(ms = 0, msg) {
     const timeoutPromise = new NPromise((_, reject) => {
-      setTimeout(() => reject(new Error(msg || "Request timed out")), ms);
+      setTimeout(() => reject(
+        msg instanceof Error 
+          ? msg 
+          : new Error(msg || "Request timed out")
+      ), ms);
     });
     return NPromise.race([this, timeoutPromise]);
   }

@@ -42,34 +42,32 @@ describe("timeout", function () {
     });
 
     it("should reject with a timeout error if the promise is too slow", function() {
-        return Promise.delay(1)
+        return Promise.delay(30)
         .timeout(10)
-        .catch(function(){
+        .then(assert.fail)
+        .catch(function(e){
+            assert(e instanceof Error);
         })
     });
 
     it("should reject with a custom timeout error if the promise is too slow and msg was provided", function() {
-        return Promise.delay(1)
+        return Promise.delay(30)
         .timeout(10, "custom")
+        .then(assert.fail)
         .catch(function(e){
             assert(/custom/i.test(e.message));
         });
     });
 
     it("should cancel the parent promise once the timeout expires", function() {
-        var didNotExecute = true;
         var wasRejectedWithTimeout = false;
-        var p = Promise.delay(22).then(function() {
-            didNotExecute = false;
-        })
+        var p = Promise.delay(22).then(function() {})
         p.timeout(11).then(function() {
             return 10;
         }).catch(function(e) {
             wasRejectedWithTimeout = true;
         })
         return Promise.delay(33).then(function() {
-            // only available with cancellation enabled, ignored
-            // assert(didNotExecute, "parent promise was not cancelled");
             assert(wasRejectedWithTimeout, "promise was not rejected with timeout");
         })
     });
@@ -190,7 +188,7 @@ describe("delay", function () {
 
     it("should reject with a custom error if an error was provided as a parameter", function() {
         var err = Error("Testing Errors")
-        return Promise.delay(1)
+        return Promise.delay(11)
             .timeout(10, err)
             .catch(function(e){
                 assert(e === err);
