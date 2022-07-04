@@ -45,10 +45,12 @@ It's also fine to copy `promise.mjs` and its type definition directly into your 
   - [`Promise.each`](http://bluebirdjs.com/docs/api/promise.each.html)
   - [`Promise.mapSeries`](http://bluebirdjs.com/docs/api/promise.mapseries.html)
   - [`Promise.map`](http://bluebirdjs.com/docs/api/promise.map.html)
+  - [`Promise.reduce`](http://bluebirdjs.com/docs/api/promise.reduce.html)
   - `Promise.defer` (deprecated)
 - Instance methods:
   - [`promise.delay`](http://bluebirdjs.com/docs/api/delay.html)
   - [`promise.map`](http://bluebirdjs.com/docs/api/map.html)
+  - [`promise.map`](http://bluebirdjs.com/docs/api/reduce.html)
   - [`promise.mapSeries`](http://bluebirdjs.com/docs/api/mapseries.html)
   - [`promise.each`](http://bluebirdjs.com/docs/api/each.html)
   - [`promise.timeout`](http://bluebirdjs.com/docs/api/timeout.html)
