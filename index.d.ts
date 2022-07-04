@@ -231,6 +231,11 @@ declare class NativeBird<R> implements PromiseLike<R>, NativeBird.Inspection<R> 
   map<U, Q>(this: NativeBird<R & Iterable<Q>>, mapper: IterateFunction<Q, U>, options?: NativeBird.ConcurrencyOption): NativeBird<U[]>;
 
   /**
+   * Same as calling `Bluebird.reduce(thisPromise, Function reducer, initialValue)`. With the exception that if this promise is bound to a value, the returned promise is bound to that value too.
+   */
+  reduce<U, Q>(this: NativeBird<R & Iterable<Q>>, reducer: (memo: U, item: Q, index: number, arrayLength: number) => Resolvable<U>, initialValue?: U): NativeBird<U>;
+
+  /**
    * Same as calling ``Bluebird.each(thisPromise, iterator)``. With the exception that if this promise is bound to a value, the returned promise is bound to that value too.
    */
   each<Q>(this: NativeBird<R & Iterable<Q>>, iterator: IterateFunction<Q, any>): NativeBird<R>;
@@ -328,6 +333,25 @@ declare class NativeBird<R> implements PromiseLike<R>, NativeBird.Inspection<R> 
       mapper: IterateFunction<R, U>,
       options?: NativeBird.ConcurrencyOption
     ): NativeBird<U[]>;
+
+  /**
+   * Reduce an array, or a promise of an array,
+   * which contains a promises (or a mix of promises and values) with the given `reducer` function with the signature `(total, current, index, arrayLength)`
+   * where `item` is the resolved value of a respective promise in the input array.
+   * If any promise in the input array is rejected the returned promise is rejected as well.
+   *
+   * If the reducer function returns a promise or a thenable, the result for the promise is awaited for before continuing with next iteration.
+   *
+   * *The original array is not modified. If no `initialValue` is given and the array doesn't contain at least 2 items,
+   * the callback will not be called and `undefined` is returned.
+   *
+   * If `initialValue` is given and the array doesn't have at least 1 item, `initialValue` is returned.*
+   */
+   static reduce<R, U>(
+    values: Resolvable<Iterable<Resolvable<R>>>,
+    reducer: (total: U, current: R, index: number, arrayLength: number) => Resolvable<U>,
+    initialValue?: U
+  ): NativeBird<U>;
 
   /**
    * Iterate over an array, or a promise of an array,
