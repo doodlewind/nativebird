@@ -2,7 +2,7 @@
   "name": "nativebird",
   "description": "Ultralight promise extension compatible with Bluebird",
   "type": "module",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "Yifeng Wang",
   "repository": "https://github.com/doodlewind/nativebird.git",
   "main": "./promise.mjs",
