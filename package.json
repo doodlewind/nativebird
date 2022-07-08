@@ -2,7 +2,7 @@
   "name": "nativebird",
   "description": "Ultralight promise extension compatible with Bluebird",
   "type": "module",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "author": "Yifeng Wang",
   "repository": "https://github.com/doodlewind/nativebird.git",
   "main": "./promise.mjs",
@@ -12,9 +12,17 @@
       "import": "./promise.mjs"
     }
   },
+  "files": [
+    "promise.mjs",
+    "README.md",
+    "logo.png",
+    "index.d.ts",
+    "dist/promise.cjs"
+  ],
   "types": "./index.d.ts",
   "scripts": {
     "build": "tsc promise.mjs --module commonjs --target esnext --allowJs --outDir dist && mv dist/promise.mjs dist/promise.cjs",
+    "prepublish": "npm run build",
     "test": "mocha"
   },
   "devDependencies": {
