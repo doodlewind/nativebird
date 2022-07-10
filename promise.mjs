@@ -152,31 +152,19 @@ NPromise.defer = function defer() {
   };
 };
 
-NPromise.reduce = async function reduce(promises, fn, initialValue) {
-  const hasInitialValue = initialValue !== undefined;
-  promises = await promises;
-  if (!Array.isArray(promises)) {
-    throw new TypeError("Promise.reduce requires array");
-  }
-
+NPromise.reduce = async function reduce(iterable, fn, initialValue) {
   if (typeof fn !== 'function') {
-    throw new TypeError(typeof fn + " is not a function");
+    throw new TypeError('Promise.reduce requires function, but got', typeof fn)
   }
-
-  if (!promises.length) {
-    return await initialValue;
-  }
-
-  const startIndex = hasInitialValue ? 0 : 1;
-  return NPromise.all(promises).then(async (list) => {
-    if (hasInitialValue) {
-      initialValue = await initialValue;
-    } else {
-      initialValue = await promises[0];
-    }
-    let ret = initialValue;
-    for (let i = startIndex, l = list.length; i < l; i++) {
-      ret = await fn(ret, list[i], i, list);
+  return NPromise.all(await iterable).then(async (list) => {
+    const iterator = list[Symbol.iterator]();
+    let ret = await initialValue;
+    let item = null;
+    let idx = -1;
+    while ((item = iterator.next(), !item.done)) {
+      ret = (++idx === 0 && ret === undefined)
+        ? await item.value
+        : await fn(ret, item.value, idx, list)
     }
     return ret;
   });

@@ -122,7 +122,25 @@ var VALUES_CRITERIA = [
       promising(3),
       4
     ], total: 10, desc: "and a blend of values"
+  }
+];
+
+var STRING_CRITERIA = [
+  {
+    value: '',
+    total: 0,
+    desc: "not iterates over empty string"
   },
+  {
+    value: '1',
+    total: '015',
+    desc: "iterates over a char"
+  },
+  {
+    value: '123',
+    total: '0152535',
+    desc: "iterates over a string"
+  }
 ];
 
 var ERROR = new Error("BOOM");
@@ -131,7 +149,7 @@ var ERROR = new Error("BOOM");
 describe("Promise.prototype.reduce", function () {
   it("works with no values", function () {
     return Promise.resolve([]).reduce(function (total, value) {
-      return total + value + 5;
+      return total + value + assert.fail();
     }).then(function (total) {
       assert.strictEqual(total, undefined);
     });
@@ -226,7 +244,7 @@ describe("Promise.reduce", function () {
   describe("with no initial accumulator or values", function () {
     it("works when the iterator returns a value", function () {
       return Promise.reduce([], function (total, value) {
-        return total + value + 5;
+        return total + value + assert.fail();
       }).then(function (total) {
         assert.strictEqual(total, undefined);
       });
@@ -235,7 +253,7 @@ describe("Promise.reduce", function () {
     it("works when the iterator returns a Promise", function () {
       return Promise.reduce([], function (total, value) {
         return promised(5).then(function (bonus) {
-          return total + value + bonus;
+          return total + value + bonus + assert.fail();
         });
       }).then(function (total) {
         assert.strictEqual(total, undefined);
@@ -244,7 +262,7 @@ describe("Promise.reduce", function () {
 
     it("works when the iterator returns a thenable", function () {
       return Promise.reduce([], function (total, value) {
-        return thenabled(total + value + 5);
+        return thenabled(total + value + assert.fail());
       }).then(function (total) {
         assert.strictEqual(total, undefined);
       });
@@ -256,6 +274,7 @@ describe("Promise.reduce", function () {
       var initial = criteria.value;
 
       describe(criteria.desc, function () {
+
         VALUES_CRITERIA.forEach(function (criteria) {
           var values = criteria.value;
           var valueTotal = criteria.total;
@@ -288,6 +307,40 @@ describe("Promise.reduce", function () {
             });
           });
         });
+
+        STRING_CRITERIA.forEach(function (criteria) {
+          var values = criteria.value;
+          var valueTotal = criteria.total;
+
+          describe(criteria.desc, function () {
+            it("works when the iterator returns a value", function () {
+              return Promise.reduce(evaluate(values), function (total, value) {
+                return total + value + 5;
+              }, evaluate(initial)).then(function (total) {
+                assert.strictEqual(total, valueTotal);
+              });
+            });
+
+            it("works when the iterator returns a Promise", function () {
+              return Promise.reduce(evaluate(values), function (total, value) {
+                return promised(5).then(function (bonus) {
+                  return total + value + bonus;
+                });
+              }, evaluate(initial)).then(function (total) {
+                assert.strictEqual(total, valueTotal);
+              });
+            });
+
+            it("works when the iterator returns a thenable", function () {
+              return Promise.reduce(evaluate(values), function (total, value) {
+                return thenabled(total + value + 5);
+              }, evaluate(initial)).then(function (total) {
+                assert.strictEqual(total, valueTotal);
+              });
+            });
+          });
+        });
+
       });
     });
 
@@ -301,7 +354,7 @@ describe("Promise.reduce", function () {
       ];
 
       return Promise.reduce(values, function (total, value) {
-        return value;
+        return assert.fail();
       }, initial).then(assert.fail, function (err) {
         assert.equal(err, ERROR);
       });
@@ -365,6 +418,7 @@ describe("Promise.reduce", function () {
       var zeroth = criteria.value;
 
       describe(criteria.desc, function () {
+
         VALUES_CRITERIA.forEach(function (criteria) {
           var values = criteria.value;
           var zerothAndValues = [zeroth].concat(values);
@@ -398,6 +452,7 @@ describe("Promise.reduce", function () {
             });
           });
         });
+
       });
     });
 
