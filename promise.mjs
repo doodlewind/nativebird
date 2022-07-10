@@ -164,7 +164,7 @@ NPromise.reduce = async function reduce(iterable, fn, initialValue) {
     while ((item = iterator.next(), !item.done)) {
       ret = (++idx === 0 && ret === undefined)
         ? await item.value
-        : await fn(ret, item.value, idx, list)
+        : await fn(ret, item.value, idx, list.length)
     }
     return ret;
   });
