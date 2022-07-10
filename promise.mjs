@@ -43,7 +43,7 @@ class NPromise extends Promise {
   spread(fn) {
     return this.then(function () {
       if (typeof fn !== "function") {
-        throw new TypeError("Promise.spread requires function");
+        throw new TypeError("Promise.spread requires function, but got", typeof fn);
       }
 
       if (!arguments || arguments.length === 0) {
@@ -65,14 +65,18 @@ NPromise.delay = function delay(ms = 0, value) {
 NPromise.try = function (fn) {
   return new NPromise(function (resolve, reject) {
     if (typeof fn !== "function") {
-      reject(new TypeError("Promise.try requires function"));
+      reject(
+        new TypeError("Promise.try requires function, but got", typeof fn)
+      );
     }
     resolve(fn());
   });
 };
 
 NPromise.each = async function each(arr, fn) {
-  if (!Array.isArray(arr)) throw new TypeError("Promise.each requires array");
+  if (!Array.isArray(arr)) {
+    throw new TypeError("Promise.each requires array, but got", typeof arr);
+  }
   const values = [];
   for (let i = 0; i < arr.length; i++) {
     const val = await NPromise.resolve(arr[i]);
@@ -84,7 +88,7 @@ NPromise.each = async function each(arr, fn) {
 
 NPromise.mapSeries = function mapSeries(arr, fn) {
   if (!Array.isArray(arr)) {
-    throw new TypeError("Promise.mapSeries requires array");
+    throw new TypeError("Promise.mapSeries requires array, but got", typeof arr);
   }
   return new NPromise(async (resolve) => {
     const results = [];
@@ -106,7 +110,7 @@ NPromise.map = function map(iterable, fn, options) {
   if ("then" in iterable) {
     return iterable.then((arr) => {
       if (!Array.isArray(arr)) {
-        throw new TypeError("Promise.map requires array");
+        throw new TypeError("Promise.map requires array, but got", typeof arr);
       }
       return NPromise.map(arr, fn, options);
     });
