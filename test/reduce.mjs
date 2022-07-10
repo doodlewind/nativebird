@@ -614,8 +614,21 @@ describe("Promise.reduce-test", function () {
     );
   });
 
-  specify("should resolve to initialValue Promise input promise does not resolve to an array", function () {
-    return Promise.reduce(Promise.resolve(123), plus, 1).catch(TypeError, function (e) {
+  specify("should throw TypeError if input promise does not resolve to an array", function () {
+    let catched = null;
+    return Promise.reduce(Promise.resolve(123), plus, 1).catch(err => {
+      catched = err;
+    }).then(() => {
+      assert(catched instanceof TypeError);
+    });
+  });
+
+  specify("should throw TypeError if input reducer is not a function", function () {
+    let catched = null;
+    return Promise.reduce([], 123, 1).catch(err => {
+      catched = err;
+    }).then(() => {
+      assert(catched instanceof TypeError);
     });
   });
 
