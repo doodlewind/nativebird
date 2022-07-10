@@ -43,7 +43,7 @@ class NPromise extends Promise {
   spread(fn) {
     return this.then(function () {
       if (typeof fn !== "function") {
-        throw new TypeError("Promise.spread requires function, but got", typeof fn);
+        throw new TypeError(`Promise.spread requires function, but got ${typeof fn}`);
       }
 
       if (!arguments || arguments.length === 0) {
@@ -66,7 +66,7 @@ NPromise.try = function (fn) {
   return new NPromise(function (resolve, reject) {
     if (typeof fn !== "function") {
       reject(
-        new TypeError("Promise.try requires function, but got", typeof fn)
+        new TypeError(`Promise.try requires function, but got ${typeof fn}`)
       );
     }
     resolve(fn());
@@ -75,7 +75,7 @@ NPromise.try = function (fn) {
 
 NPromise.each = async function each(arr, fn) {
   if (!Array.isArray(arr)) {
-    throw new TypeError("Promise.each requires array, but got", typeof arr);
+    throw new TypeError(`Promise.each requires array, but got ${typeof arr}`);
   }
   const values = [];
   for (let i = 0; i < arr.length; i++) {
@@ -88,7 +88,7 @@ NPromise.each = async function each(arr, fn) {
 
 NPromise.mapSeries = function mapSeries(arr, fn) {
   if (!Array.isArray(arr)) {
-    throw new TypeError("Promise.mapSeries requires array, but got", typeof arr);
+    throw new TypeError(`Promise.mapSeries requires array, but got ${typeof arr}`);
   }
   return new NPromise(async (resolve) => {
     const results = [];
@@ -110,7 +110,7 @@ NPromise.map = function map(iterable, fn, options) {
   if ("then" in iterable) {
     return iterable.then((arr) => {
       if (!Array.isArray(arr)) {
-        throw new TypeError("Promise.map requires array, but got", typeof arr);
+        throw new TypeError(`Promise.map requires array, but got ${typeof arr}`);
       }
       return NPromise.map(arr, fn, options);
     });
@@ -154,7 +154,7 @@ NPromise.defer = function defer() {
 
 NPromise.reduce = async function reduce(iterable, fn, initialValue) {
   if (typeof fn !== 'function') {
-    throw new TypeError('Promise.reduce requires function, but got', typeof fn)
+    throw new TypeError(`Promise.reduce requires function, but got ${typeof fn}`)
   }
   return NPromise.all(await iterable).then(async (list) => {
     const iterator = list[Symbol.iterator]();
