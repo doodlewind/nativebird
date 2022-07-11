@@ -43,7 +43,7 @@ class NPromise extends Promise {
   spread(fn) {
     return this.then(function () {
       if (typeof fn !== "function") {
-        throw new TypeError("Promise.spread requires function");
+        throw new TypeError(`Promise.spread requires function, but got ${typeof fn}`);
       }
 
       if (!arguments || arguments.length === 0) {
@@ -65,14 +65,18 @@ NPromise.delay = function delay(ms = 0, value) {
 NPromise.try = function (fn) {
   return new NPromise(function (resolve, reject) {
     if (typeof fn !== "function") {
-      reject(new TypeError("Promise.try requires function"));
+      reject(
+        new TypeError(`Promise.try requires function, but got ${typeof fn}`)
+      );
     }
     resolve(fn());
   });
 };
 
 NPromise.each = async function each(arr, fn) {
-  if (!Array.isArray(arr)) throw new TypeError("Promise.each requires array");
+  if (!Array.isArray(arr)) {
+    throw new TypeError(`Promise.each requires array, but got ${typeof arr}`);
+  }
   const values = [];
   for (let i = 0; i < arr.length; i++) {
     const val = await NPromise.resolve(arr[i]);
@@ -84,7 +88,7 @@ NPromise.each = async function each(arr, fn) {
 
 NPromise.mapSeries = function mapSeries(arr, fn) {
   if (!Array.isArray(arr)) {
-    throw new TypeError("Promise.mapSeries requires array");
+    throw new TypeError(`Promise.mapSeries requires array, but got ${typeof arr}`);
   }
   return new NPromise(async (resolve) => {
     const results = [];
@@ -106,7 +110,7 @@ NPromise.map = function map(iterable, fn, options) {
   if ("then" in iterable) {
     return iterable.then((arr) => {
       if (!Array.isArray(arr)) {
-        throw new TypeError("Promise.map requires array");
+        throw new TypeError(`Promise.map requires array, but got ${typeof arr}`);
       }
       return NPromise.map(arr, fn, options);
     });
@@ -148,31 +152,19 @@ NPromise.defer = function defer() {
   };
 };
 
-NPromise.reduce = async function reduce(promises, fn, initialValue) {
-  const hasInitialValue = initialValue !== undefined;
-  promises = await promises;
-  if (!Array.isArray(promises)) {
-    throw new TypeError("Promise.reduce requires array");
-  }
-
+NPromise.reduce = async function reduce(iterable, fn, initialValue) {
   if (typeof fn !== 'function') {
-    throw new TypeError(typeof fn + " is not a function");
+    throw new TypeError(`Promise.reduce requires function, but got ${typeof fn}`)
   }
-
-  if (!promises.length) {
-    return await initialValue;
-  }
-
-  const startIndex = hasInitialValue ? 0 : 1;
-  return NPromise.all(promises).then(async (list) => {
-    if (hasInitialValue) {
-      initialValue = await initialValue;
-    } else {
-      initialValue = await promises[0];
-    }
-    let ret = initialValue;
-    for (let i = startIndex, l = list.length; i < l; i++) {
-      ret = await fn(ret, list[i], i, list);
+  return NPromise.all(await iterable).then(async (list) => {
+    const iterator = list[Symbol.iterator]();
+    let ret = await initialValue;
+    let item = null;
+    let idx = -1;
+    while ((item = iterator.next(), !item.done)) {
+      ret = (++idx === 0 && ret === undefined)
+        ? await item.value
+        : await fn(ret, item.value, idx, list.length)
     }
     return ret;
   });
