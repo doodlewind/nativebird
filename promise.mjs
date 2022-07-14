@@ -94,7 +94,7 @@ NPromise.mapSeries = function mapSeries(arr, fn) {
     const results = [];
     for (let i = 0; i < arr.length; i++) {
       const val = await NPromise.resolve(arr[i]);
-      results[i] = fn(val, i, arr.length);
+      results[i] = await fn(val, i, arr.length);
     }
     resolve(results);
   });

@@ -184,3 +184,12 @@ describe("mapSeries and each", function() {
         });
     })
 });
+
+describe("mapSeries with async", function() {
+    it("can unwrap async callback", async function() {
+        const result = await Promise.mapSeries([1, 2, 3], async function(value) {
+            return value;
+        });
+        assert.deepEqual(result, [1, 2, 3]);
+    });
+});
