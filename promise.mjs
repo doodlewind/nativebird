@@ -46,9 +46,6 @@ class NPromise extends Promise {
         throw new TypeError(`Promise.spread requires function, but got ${typeof fn}`);
       }
 
-      if (!arguments || arguments.length === 0) {
-        return fn.apply();
-      }
       return fn.apply(null, arguments[0]);
     });
   }
@@ -73,6 +70,7 @@ NPromise.try = function (fn) {
   });
 };
 
+// TODO refactor with Symbol.Iterable
 NPromise.each = async function each(arr, fn) {
   if (!Array.isArray(arr)) {
     throw new TypeError(`Promise.each requires array, but got ${typeof arr}`);
@@ -86,6 +84,7 @@ NPromise.each = async function each(arr, fn) {
   return values;
 };
 
+// TODO refactor with Symbol.Iterable
 NPromise.mapSeries = function mapSeries(arr, fn) {
   if (!Array.isArray(arr)) {
     throw new TypeError(`Promise.mapSeries requires array, but got ${typeof arr}`);

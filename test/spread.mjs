@@ -30,6 +30,12 @@ describe("spread", function () {
         });
     });
 
+    it("works on empty array", function () {
+        return Promise.resolve([]).spread(function (a, b, c) {
+            assert(arguments.length === 0)
+        });
+    });
+
     it("spreads promises for arrays across arguments", function () {
         return Promise.resolve([Promise.resolve(10)])
         .all()

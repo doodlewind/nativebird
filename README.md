@@ -8,6 +8,10 @@ Ultralight promise extension compatible with Bluebird
 <a href="./package.json">
   <img src="https://img.shields.io/bundlephobia/min/nativebird"/>
 </a>
+<a href="./package.json">
+  <!-- NOTE after "npm run coverage", check whether next line of code formatted correctly -->
+  <img src="https://img.shields.io/badge/Coverage-100%25-83A603.svg?prefix=$coverage$">
+</a>
 
 ![logo](./logo.png)
 

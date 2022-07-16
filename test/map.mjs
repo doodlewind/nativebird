@@ -41,9 +41,9 @@ describe("Promise.map-test", function () {
 
     specify("should map input values array", function() {
         var input = [1, 2, 3];
-        return Promise.map(input, mapper).then(
+        return Promise.map(input, mapper).map(mapper).then(
             function(results) {
-                assert.deepEqual(results, [2,4,6]);
+                assert.deepEqual(results, [4,8,12]);
             },
             assert.fail
         );
