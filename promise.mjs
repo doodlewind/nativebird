@@ -46,9 +46,6 @@ class NPromise extends Promise {
         throw new TypeError(`Promise.spread requires function, but got ${typeof fn}`);
       }
 
-      if (!arguments || arguments.length === 0) {
-        return fn.apply();
-      }
       return fn.apply(null, arguments[0]);
     });
   }
