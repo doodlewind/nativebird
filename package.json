@@ -21,7 +21,7 @@
   ],
   "types": "./index.d.ts",
   "scripts": {
-    "build": "node ./scripts/build.mjs",
+    "build": "node ./scripts/build.cjs",
     "prepublish": "npm run build",
     "test": "mocha",
     "coverage": "c8 --reporter=json-summary --reporter=text --reporter=html mocha",
