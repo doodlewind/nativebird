@@ -22,19 +22,6 @@ function thenabled(val, arr) {
 
 describe("Promise.each", function() {
 
-    it("should return the array's values mapped", function() {
-        var a = [promised(1), promised(2), promised(3)];
-        var b = [];
-        return Promise.resolve(a).mapSeries(function(val) {
-            b.push(3-val);
-            return val + 2;
-        }).then(function(ret) {
-            assert.deepEqual(ret, [3,4,5]);
-            assert.deepEqual(b, [2, 1, 0]);
-        });
-    });
-
-
     it("takes value, index and length", function() {
         var a = [promised(1), promised(2), promised(3)];
         var b = [];
@@ -69,9 +56,15 @@ describe("Promise.each", function() {
         });
     });
 
+    it("should throw a TypeError when input with non-array value", function() {
+        return Promise.each('string', assert.fail).catch(function(err) {
+            assert(err instanceof TypeError)
+        })
+    });
+
     it("doesnt iterate with an empty array", function() {
-        return Promise.each([], function(val) {
-            throw new Error();
+        return Promise.each([], function() {
+            assert.fail();
         }).then(function(ret) {
             assert.deepEqual(ret, []);
         });
@@ -154,6 +147,28 @@ describe("Promise.prototype.each", function() {
             assert.deepEqual(b, [1,2]);
         });
     });
+});
+
+describe("Promise.mapSeries", function() {
+
+    it("should return the array's values mapped", function() {
+        var a = [promised(1), promised(2), promised(3)];
+        var b = [];
+        return Promise.resolve(a).mapSeries(function(val) {
+            b.push(3-val);
+            return val + 2;
+        }).then(function(ret) {
+            assert.deepEqual(ret, [3,4,5]);
+            assert.deepEqual(b, [2, 1, 0]);
+        });
+    });
+
+    it("should throw a TypeError when input with non-array value", function() {
+        return Promise.resolve('string').mapSeries(assert.fail).catch(err => {
+            assert(err instanceof TypeError)
+        })
+    });
+
 });
 
 describe("mapSeries and each", function() {

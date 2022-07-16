@@ -70,6 +70,7 @@ NPromise.try = function (fn) {
   });
 };
 
+// TODO refactor with Symbol.Iterable
 NPromise.each = async function each(arr, fn) {
   if (!Array.isArray(arr)) {
     throw new TypeError(`Promise.each requires array, but got ${typeof arr}`);
@@ -83,6 +84,7 @@ NPromise.each = async function each(arr, fn) {
   return values;
 };
 
+// TODO refactor with Symbol.Iterable
 NPromise.mapSeries = function mapSeries(arr, fn) {
   if (!Array.isArray(arr)) {
     throw new TypeError(`Promise.mapSeries requires array, but got ${typeof arr}`);
