@@ -23,9 +23,13 @@
   "scripts": {
     "build": "node ./scripts/build.mjs",
     "prepublish": "npm run build",
-    "test": "mocha"
+    "test": "mocha",
+    "coverage": "c8 --reporter=json-summary --reporter=text --reporter=html mocha",
+    "postcoverage": "coverage-badge-creator"
   },
   "devDependencies": {
+    "c8": "^7.11.3",
+    "coverage-badge-creator": "^1.0.12",
     "mocha": "^10.0.0",
     "typescript": "^4.7.4"
   },
