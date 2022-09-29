@@ -89,11 +89,16 @@ NPromise.mapSeries = function mapSeries(arr, fn) {
   if (!Array.isArray(arr)) {
     throw new TypeError(`Promise.mapSeries requires array, but got ${typeof arr}`);
   }
-  return new NPromise(async (resolve) => {
+  return new NPromise(async (resolve, reject) => {
     const results = [];
     for (let i = 0; i < arr.length; i++) {
-      const val = await NPromise.resolve(arr[i]);
-      results[i] = await fn(val, i, arr.length);
+      try {
+        const val = await NPromise.resolve(arr[i]);
+        results[i] = await fn(val, i, arr.length);
+      }
+      catch(err) {
+        reject(err)
+      }
     }
     resolve(results);
   });
