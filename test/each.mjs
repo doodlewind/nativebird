@@ -169,6 +169,16 @@ describe("Promise.mapSeries", function() {
         })
     });
 
+    it("should caught exception when array item rejects", async function() {
+        let caught = false;
+        await Promise.mapSeries([0, 1, 2], (v) => {
+            if (v > 0) throw new Error();
+            return v;
+        }).catch(() => {
+            caught = true;
+        });
+        assert(caught);
+    });
 });
 
 describe("mapSeries and each", function() {
