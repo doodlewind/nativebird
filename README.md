@@ -54,7 +54,7 @@ It's also fine to copy `promise.mjs` and its type definition directly into your 
 - Instance methods:
   - [`promise.delay`](http://bluebirdjs.com/docs/api/delay.html)
   - [`promise.map`](http://bluebirdjs.com/docs/api/map.html)
-  - [`promise.map`](http://bluebirdjs.com/docs/api/reduce.html)
+  - [`promise.reduce`](http://bluebirdjs.com/docs/api/reduce.html)
   - [`promise.mapSeries`](http://bluebirdjs.com/docs/api/mapseries.html)
   - [`promise.each`](http://bluebirdjs.com/docs/api/each.html)
   - [`promise.timeout`](http://bluebirdjs.com/docs/api/timeout.html)
