@@ -3,8 +3,8 @@ class NPromise extends Promise {
     return this.then((value) => NPromise.delay(ms, value));
   }
 
-  map(fn) {
-    return this.then((arr) => NPromise.map(arr, fn));
+  map(fn, options) {
+    return this.then((arr) => NPromise.map(arr, fn, options));
   }
 
   mapSeries(fn) {
