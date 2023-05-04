@@ -34,7 +34,7 @@ type CatchFilter<E> = ((error: E) => boolean) | (object & E);
 type Resolvable<R> = R | PromiseLike<R>;
 type IterateFunction<T, R> = (item: T, index: number, arrayLength: number) => Resolvable<R>;
 
-declare class NativeBird<R> implements PromiseLike<R>, NativeBird.Inspection<R> {
+declare class NativeBird<R> extends Promise<any> implements PromiseLike<R>, NativeBird.Inspection<R> {
   readonly [Symbol.toStringTag]: "Object";
 
   /**
@@ -295,15 +295,6 @@ declare class NativeBird<R> implements PromiseLike<R>, NativeBird.Inspection<R> 
   static all<T1>(values: [Resolvable<T1>]): NativeBird<[T1]>;
   // array with values
   static all<R>(values: Resolvable<Iterable<Resolvable<R>>>): NativeBird<R[]>;
-
-  static allSettled<T1, T2, T3, T4, T5>(values: [Resolvable<T1>, Resolvable<T2>, Resolvable<T3>, Resolvable<T4>, Resolvable<T5>]): NativeBird<[NativeBird.Inspection<T1>, NativeBird.Inspection<T2>,
-    NativeBird.Inspection<T3>, NativeBird.Inspection<T4>, NativeBird.Inspection<T5>]>;
-  static allSettled<T1, T2, T3, T4>(values: [Resolvable<T1>, Resolvable<T2>, Resolvable<T3>, Resolvable<T4>]): NativeBird<[NativeBird.Inspection<T1>, NativeBird.Inspection<T2>,
-    NativeBird.Inspection<T3>, NativeBird.Inspection<T4>]>;
-  static allSettled<T1, T2, T3>(values: [Resolvable<T1>, Resolvable<T2>, Resolvable<T3>]): NativeBird<[NativeBird.Inspection<T1>, NativeBird.Inspection<T2>, NativeBird.Inspection<T3>]>;
-  static allSettled<T1, T2>(values: [Resolvable<T1>, Resolvable<T2>]): NativeBird<[NativeBird.Inspection<T1>, NativeBird.Inspection<T2>]>;
-  static allSettled<T1>(values: [Resolvable<T1>]): NativeBird<[NativeBird.Inspection<T1>]>;
-  static allSettled<R>(values: Resolvable<Iterable<Resolvable<R>>>): NativeBird<Array<NativeBird.Inspection<R>>>;
 
   /**
    * Like `Promise.some()`, with 1 as `count`. However, if the promise fulfills, the fulfillment value is not an array of 1 but the value directly.
