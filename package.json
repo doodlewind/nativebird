@@ -5,12 +5,12 @@
   "version": "1.2.11",
   "author": "Yifeng Wang",
   "repository": "https://github.com/doodlewind/nativebird.git",
-  "main": "./promise.mjs",
+  "module": "./promise.mjs",
+  "main": "./dist/promise.cjs",
   "exports": {
-    ".": {
       "require": "./dist/promise.cjs",
-      "import": "./promise.mjs"
-    }
+      "import": "./promise.mjs",
+      "types": "./index.d.ts"
   },
   "files": [
     "promise.mjs",
