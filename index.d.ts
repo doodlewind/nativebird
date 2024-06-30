@@ -246,6 +246,12 @@ declare class NativeBird<R> extends Promise<any> implements PromiseLike<R>, Nati
   mapSeries<U, Q>(this: NativeBird<R & Iterable<Q>>, iterator: IterateFunction<Q, U>): NativeBird<U[]>;
 
   /**
+   * Register a node-style callback on this promise.
+   * @param fn 
+   */
+  asCallback<R>(fn: (err: unknown, result?: unknown) => void): NativeBird<R>
+
+  /**
    * Start the chain of promises with `Promise.try`. Any synchronous exceptions will be turned into rejections on the returned promise.
    *
    * Note about second argument: if it's specifically a true array, its values become respective arguments for the function call.
