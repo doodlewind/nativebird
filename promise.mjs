@@ -62,22 +62,19 @@ class NPromise extends Promise {
     }
 
     this.then(
-      // Resolve handler
       (value) => {
-        process.nextTick(() => {
+        queueMicrotask(() => {
           try {
             callback(null, value);
           } catch (err) {
-            // Handle any synchronous errors in callback
-            process.nextTick(() => {
+            queueMicrotask(() => {
               throw err;
             });
           }
         });
       },
-      // Reject handler
       (error) => {
-        process.nextTick(() => {
+        queueMicrotask(() => {
           try {
             if (!error) {
               error = new Error("Promise rejected without a reason", {
@@ -86,8 +83,7 @@ class NPromise extends Promise {
             }
             callback(error);
           } catch (err) {
-            // Handle any synchronous errors in callback
-            process.nextTick(() => {
+            queueMicrotask(() => {
               throw err;
             });
           }
