@@ -20,9 +20,9 @@ class NPromise extends Promise {
       setTimeout(
         () =>
           reject(
-            msg instanceof Error ? msg : new Error(msg || "Request timed out")
+            msg instanceof Error ? msg : new Error(msg || "Request timed out"),
           ),
-        ms
+        ms,
       );
     });
     return NPromise.race([this, timeoutPromise]);
@@ -45,7 +45,7 @@ class NPromise extends Promise {
     return this.then(function () {
       if (typeof fn !== "function") {
         throw new TypeError(
-          `Promise.spread requires function, but got ${typeof fn}`
+          `Promise.spread requires function, but got ${typeof fn}`,
         );
       }
 
@@ -55,6 +55,43 @@ class NPromise extends Promise {
 
   reduce(fn, initialValue) {
     return NPromise.reduce(this, fn, initialValue);
+  }
+  asCallback(callback) {
+    if (typeof callback !== "function") {
+      return this;
+    }
+
+    this.then(
+      (value) => {
+        queueMicrotask(() => {
+          try {
+            callback(null, value);
+          } catch (err) {
+            queueMicrotask(() => {
+              throw err;
+            });
+          }
+        });
+      },
+      (error) => {
+        queueMicrotask(() => {
+          try {
+            if (!error) {
+              error = new Error("Promise rejected without a reason", {
+                cause: error,
+              });
+            }
+            callback(error);
+          } catch (err) {
+            queueMicrotask(() => {
+              throw err;
+            });
+          }
+        });
+      },
+    );
+
+    return this;
   }
 }
 
@@ -66,7 +103,7 @@ NPromise.try = function (fn) {
   return new NPromise(function (resolve, reject) {
     if (typeof fn !== "function") {
       reject(
-        new TypeError(`Promise.try requires function, but got ${typeof fn}`)
+        new TypeError(`Promise.try requires function, but got ${typeof fn}`),
       );
     }
     resolve(fn());
@@ -91,7 +128,7 @@ NPromise.each = async function each(arr, fn) {
 NPromise.mapSeries = function mapSeries(arr, fn) {
   if (!Array.isArray(arr)) {
     throw new TypeError(
-      `Promise.mapSeries requires array, but got ${typeof arr}`
+      `Promise.mapSeries requires array, but got ${typeof arr}`,
     );
   }
   return new NPromise(async (resolve, reject) => {
@@ -119,7 +156,7 @@ NPromise.map = function map(iterable, fn, options) {
     return iterable.then((arr) => {
       if (!Array.isArray(arr)) {
         throw new TypeError(
-          `Promise.map requires array, but got ${typeof arr}`
+          `Promise.map requires array, but got ${typeof arr}`,
         );
       }
       return NPromise.map(arr, fn, options);
@@ -165,7 +202,7 @@ NPromise.defer = function defer() {
 NPromise.reduce = async function reduce(iterable, fn, initialValue) {
   if (typeof fn !== "function") {
     throw new TypeError(
-      `Promise.reduce requires function, but got ${typeof fn}`
+      `Promise.reduce requires function, but got ${typeof fn}`,
     );
   }
   return NPromise.all(await iterable).then(async (list) => {
@@ -174,10 +211,9 @@ NPromise.reduce = async function reduce(iterable, fn, initialValue) {
     let item = null;
     let idx = -1;
     while (((item = iterator.next()), !item.done)) {
-      ret =
-        ++idx === 0 && ret === undefined
-          ? await item.value
-          : await fn(ret, item.value, idx, list.length);
+      ret = ++idx === 0 && ret === undefined
+        ? await item.value
+        : await fn(ret, item.value, idx, list.length);
     }
     return ret;
   });
