@@ -8,9 +8,9 @@
   "module": "./promise.mjs",
   "main": "./dist/promise.cjs",
   "exports": {
-      "require": "./dist/promise.cjs",
-      "import": "./promise.mjs",
-      "types": "./index.d.ts"
+    "require": "./dist/promise.cjs",
+    "import": "./promise.mjs",
+    "types": "./index.d.ts"
   },
   "files": [
     "promise.mjs",
@@ -30,7 +30,7 @@
   "devDependencies": {
     "c8": "^7.11.3",
     "coverage-badge-creator": "^1.0.12",
-    "mocha": "^10.0.0",
+    "mocha": "^10.6.0",
     "typescript": "^4.7.4"
   },
   "keywords": [
