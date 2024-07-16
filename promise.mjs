@@ -109,7 +109,7 @@ NPromise.delay = function delay(ms = 0, value) {
   return new NPromise((resolve) => setTimeout(() => resolve(value), ms));
 };
 
-NPromise.attempt = NPromise.try = function (fn) {
+NPromise.try = function (fn) {
   return new NPromise(function (resolve, reject) {
     if (typeof fn !== "function") {
       reject(
