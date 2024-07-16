@@ -1,4 +1,14 @@
 class NPromise extends Promise {
+  _bound = undefined;
+
+  /**
+   * @warning NPromise.bind is not well tested
+   */
+  bind(thisArg) {
+    this._bound = thisArg;
+    return this;
+  }
+
   delay(ms = 0) {
     return this.then((value) => NPromise.delay(ms, value));
   }
@@ -99,7 +109,7 @@ NPromise.delay = function delay(ms = 0, value) {
   return new NPromise((resolve) => setTimeout(() => resolve(value), ms));
 };
 
-NPromise.try = function (fn) {
+NPromise.attempt = NPromise.try = function (fn) {
   return new NPromise(function (resolve, reject) {
     if (typeof fn !== "function") {
       reject(
@@ -217,6 +227,40 @@ NPromise.reduce = async function reduce(iterable, fn, initialValue) {
     }
     return ret;
   });
+};
+
+/**
+ * @warning NPromise.bind is not well tested
+ */
+NPromise.bind = function bind(thisArg, value) {
+  return NPromise.resolve(value).bind(thisArg, value);
+};
+
+NPromise.method = function (fn) {
+  if (typeof fn !== "function") {
+    throw new TypeError(
+      `Promise.method requires function, but got ${typeof fn}`,
+    );
+  }
+  return function (...args) {
+    let res
+    try {
+      res = fn.apply(this, args);
+    } catch (e) {
+      return NPromise.reject(e);
+    }
+    // It seems we can not use NPromise.resolve(res) here,
+    // because of Promise.resolve cant bind thisArg
+    return {
+      async then(onFulfilled, onRejected) {
+        try {
+          onFulfilled.bind(res?._bound)(await NPromise.resolve(res));
+        } catch(e) {
+          onRejected(await NPromise.reject(e))
+        }
+      }
+    };
+  }
 };
 
 export default NPromise;
